@@ -7,7 +7,7 @@ services:
   unit:
     image: ruby:2.3
     volumes:
-      - '"${WORKSPACE_PATH}/${JOB_NAME}":/app'
+      - ${WORKSPACE_PATH}/${JOB_NAME}:/app
     working_dir: /app
     command: bash -c "bundle install && bundle exec ruby app_test.rb"
   production:
