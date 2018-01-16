@@ -1,4 +1,4 @@
 # docker jenkins workshop
 
-sample project
+sample project for docker
 
