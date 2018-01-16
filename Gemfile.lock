@@ -1,0 +1,29 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    mustermann (1.0.1)
+    power_assert (1.1.1)
+    rack (2.0.3)
+    rack-protection (2.0.0)
+      rack
+    rack-test (0.8.2)
+      rack (>= 1.0, < 3)
+    sinatra (2.0.0)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.0)
+      tilt (~> 2.0)
+    test-unit (3.2.7)
+      power_assert
+    tilt (2.0.8)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  rack-test
+  sinatra
+  test-unit
+
+BUNDLED WITH
+   1.16.1

@@ -1,0 +1,33 @@
+node {
+    git poll: true, url: 'https://github.com/subicura/jenkins-test.git'
+    
+    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub',
+usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
+        stage('Pull') {
+            git 'https://github.com/subicura/jenkins-test.git'
+        }
+        stage('Unit Test') {
+            sh(script: 'docker run --rm -v /Users/subicura/Downloads/tmp/jenkins/workspace/${JOB_NAME}:/app -w /app ruby:2.3 sh -c "bundle install && bundle exec ruby app_test.rb"')
+        }
+        stage('Build') {
+            sh(script: 'docker build --force-rm=true -t ${DOCKER_USER_ID}/ruby-app:latest .')
+        }
+        stage('Tag') {
+            sh(script: 'docker tag ${DOCKER_USER_ID}/ruby-app ${DOCKER_USER_ID}/ruby-app:${BUILD_NUMBER}')
+        }
+        stage('Push') {
+            sh(script: 'docker login -u ${DOCKER_USER_ID} -p ${DOCKER_USER_PASSWORD}')
+            sh(script: 'docker push ${DOCKER_USER_ID}/ruby-app:${BUILD_NUMBER}')
+            sh(script: 'docker push ${DOCKER_USER_ID}/ruby-app:latest')
+        }
+        stage('Deploy') {
+            try {
+                sh(script: 'docker stop ruby-app')
+                sh(script: 'docker rm ruby-app')
+            } catch(e) {
+                echo "No ruby-app container exists"
+            }
+            sh(script: 'docker run -d -p 4567:4567 --name=ruby-app ${DOCKER_USER_ID}/ruby-app:${BUILD_NUMBER}')
+        }
+    }
+}

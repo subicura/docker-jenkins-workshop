@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  app:
+    build: .
+    image: ${DOCKER_USER_ID}/ruby-app
+  unit:
+    image: ruby:2.3
+    volumes:
+      - ${WORKSPACE_PATH}/${JOB_NAME}:/app
+    working_dir: /app
+    command: bash -c "bundle install && bundle exec ruby app_test.rb"
+  production:
+    image: ${DOCKER_USER_ID}/ruby-app:${BUILD_NUMBER}
+    ports:
+      - 4567:4567
