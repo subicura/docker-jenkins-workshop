@@ -1,10 +1,10 @@
 node {
-    git poll: true, url: 'https://github.com/subicura/jenkins-test.git'
+    git poll: true, url: 'https://github.com/subicura/docker-jenkins-workshop.git'
     
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub',
 usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
         stage('Pull') {
-            git 'https://github.com/subicura/jenkins-test.git'
+            git 'https://github.com/subicura/docker-jenkins-workshop.git'
         }
         stage('Unit Test') {
             sh(script: 'docker-compose run --rm unit')
