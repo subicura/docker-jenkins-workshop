@@ -1,7 +1,7 @@
 node {
     git poll: true, url: 'https://github.com/subicura/docker-jenkins-workshop.git'
     
-    withEnv(["DOCKER_HOST=tcp://docker.for.win.localhost:3475"]) {
+    withEnv(["DOCKER_HOST=tcp://docker.for.win.localhost:2375"]) {
         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub',
     usernameVariable: 'DOCKER_USER_ID', passwordVariable: 'DOCKER_USER_PASSWORD']]) {
             stage('Pull') {
